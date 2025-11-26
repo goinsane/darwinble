@@ -12,6 +12,7 @@ import (
 )
 
 // PeripheralManagerConnectionLatency
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerconnectionlatency
 type PeripheralManagerConnectionLatency int
 
@@ -22,6 +23,7 @@ const (
 )
 
 // PeripheralManagerRestoreOpts
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate/peripheral_manager_state_restoration_options
 type PeripheralManagerRestoreOpts struct {
 	Services          []MutableService
@@ -29,6 +31,7 @@ type PeripheralManagerRestoreOpts struct {
 }
 
 // PeripheralManager
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager
 type PeripheralManager struct {
 	ptr unsafe.Pointer
@@ -75,30 +78,35 @@ func (pm PeripheralManager) SetDelegate(d PeripheralManagerDelegate) {
 }
 
 // State
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmanager/1648600-state
 func (pm PeripheralManager) State() ManagerState {
 	return ManagerState(C.cb_pmgr_state(pm.ptr))
 }
 
 // AddService
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393255-addservice
 func (pm PeripheralManager) AddService(svc MutableService) {
 	C.cb_pmgr_add_svc(pm.ptr, svc.ptr)
 }
 
 // RemoveService
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393287-removeservice
 func (pm PeripheralManager) RemoveService(svc MutableService) {
 	C.cb_pmgr_remove_svc(pm.ptr, svc.ptr)
 }
 
 // RemoveAllServices
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393269-removeallservices
 func (pm PeripheralManager) RemoveAllServices() {
 	C.cb_pmgr_remove_all_svcs(pm.ptr)
 }
 
 // StartAdvertising
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393252-startadvertising
 func (pm PeripheralManager) StartAdvertising(ad AdvData) error {
 	err := C.struct_bt_error{}
@@ -128,18 +136,21 @@ func (pm PeripheralManager) StartAdvertising(ad AdvData) error {
 }
 
 // StopAdvertising
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393275-stopadvertising
 func (pm PeripheralManager) StopAdvertising() {
 	C.cb_pmgr_stop_adv(pm.ptr)
 }
 
 // IsAdvertising
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393291-isadvertising
 func (pm PeripheralManager) IsAdvertising() bool {
 	return bool(C.cb_pmgr_is_adv(pm.ptr))
 }
 
 // UpdateValue
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393281-updatevalue
 func (pm PeripheralManager) UpdateValue(value []byte, chr Characteristic, centrals []Central) bool {
 	ba := byteSliceToByteArr(value)
@@ -156,12 +167,14 @@ func (pm PeripheralManager) UpdateValue(value []byte, chr Characteristic, centra
 }
 
 // RespondToRequest
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393293-respondtorequest
 func (pm PeripheralManager) RespondToRequest(req ATTRequest, result ATTError) {
 	C.cb_pmgr_respond_to_req(pm.ptr, req.ptr, C.int(result))
 }
 
 // SetDesiredConnectionLatency
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanager/1393277-setdesiredconnectionlatency
 func (pm PeripheralManager) SetDesiredConnectionLatency(latency PeripheralManagerConnectionLatency, central Central) {
 	C.cb_pmgr_set_conn_latency(pm.ptr, C.int(latency), central.ptr)

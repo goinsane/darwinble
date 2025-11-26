@@ -9,6 +9,7 @@ import "C"
 import "unsafe"
 
 // MutableService
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmutableservice
 type MutableService struct {
 	ptr unsafe.Pointer
@@ -29,6 +30,7 @@ func (s MutableService) Service() Service {
 }
 
 // SetCharacteristics
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmutableservice/1434317-characteristics
 func (s MutableService) SetCharacteristics(mchrs []MutableCharacteristic) {
 	chrs := mallocObjArr(len(mchrs))
@@ -42,6 +44,7 @@ func (s MutableService) SetCharacteristics(mchrs []MutableCharacteristic) {
 }
 
 // SetIncludedServices
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmutableservice/1434320-includedservices
 func (s MutableService) SetIncludedServices(msvcs []MutableService) {
 	svcs := mallocObjArr(len(msvcs))

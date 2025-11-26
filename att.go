@@ -8,6 +8,7 @@ import "C"
 import "unsafe"
 
 // AttributePermissions
+//
 // https://developer.apple.com/documentation/corebluetooth/cbattributepermissions
 type AttributePermissions int
 
@@ -19,6 +20,7 @@ const (
 )
 
 // ATTError
+//
 // https://developer.apple.com/documentation/corebluetooth/cbatterror
 type ATTError int
 
@@ -44,12 +46,14 @@ const (
 )
 
 // ATTRequest
+//
 // https://developer.apple.com/documentation/corebluetooth/cbattrequest
 type ATTRequest struct {
 	ptr unsafe.Pointer
 }
 
 // Central
+//
 // https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518995-central
 func (r ATTRequest) Central() Central {
 	ptr := C.cb_atr_central(r.ptr)
@@ -57,6 +61,7 @@ func (r ATTRequest) Central() Central {
 }
 
 // Characteristic
+//
 // https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518716-characteristic
 func (r ATTRequest) Characteristic() Characteristic {
 	ptr := C.cb_atr_characteristic(r.ptr)
@@ -64,6 +69,7 @@ func (r ATTRequest) Characteristic() Characteristic {
 }
 
 // Value
+//
 // https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518795-value
 func (r ATTRequest) Value() []byte {
 	ba := C.cb_atr_value(r.ptr)
@@ -71,6 +77,7 @@ func (r ATTRequest) Value() []byte {
 }
 
 // SetValue
+//
 // https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518795-value
 func (r ATTRequest) SetValue(v []byte) {
 	ba := byteSliceToByteArr(v)
@@ -80,6 +87,7 @@ func (r ATTRequest) SetValue(v []byte) {
 }
 
 // Offset
+//
 // https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518857-offset
 func (r ATTRequest) Offset() int {
 	return int(C.cb_atr_offset(r.ptr))

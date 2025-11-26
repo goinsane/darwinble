@@ -11,6 +11,7 @@ import (
 )
 
 // PeripheralState
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralstate
 type PeripheralState int
 
@@ -24,6 +25,7 @@ const (
 var prphPtrMap = newPtrMap()
 
 // Peripheral
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral
 type Peripheral struct {
 	ptr unsafe.Pointer
@@ -43,6 +45,7 @@ func addPeripheralDlg(ptr unsafe.Pointer, dlg PeripheralDelegate) {
 }
 
 // Identifier
+//
 // https://developer.apple.com/documentation/corebluetooth/cbpeer/1620687-identifier
 func (p Peripheral) Identifier() UUID {
 	cstr := C.cb_peer_identifier(p.ptr)
@@ -50,6 +53,7 @@ func (p Peripheral) Identifier() UUID {
 }
 
 // Name
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1519029-name
 func (p Peripheral) Name() string {
 	cstr := C.cb_prph_name(p.ptr)
@@ -57,6 +61,7 @@ func (p Peripheral) Name() string {
 }
 
 // SetDelegate
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1518730-delegate
 func (p Peripheral) SetDelegate(dlg PeripheralDelegate) {
 	addPeripheralDlg(p.ptr, dlg)
@@ -64,6 +69,7 @@ func (p Peripheral) SetDelegate(dlg PeripheralDelegate) {
 }
 
 // DiscoverServices
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1518706-discoverservices
 func (p Peripheral) DiscoverServices(svcUUIDs []UUID) {
 	arr := uuidsToStrArr(svcUUIDs)
@@ -73,6 +79,7 @@ func (p Peripheral) DiscoverServices(svcUUIDs []UUID) {
 }
 
 // DiscoverIncludedServices
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1519014-discoverincludedservices
 func (p Peripheral) DiscoverIncludedServices(svcUUIDs []UUID, svc Service) {
 	arr := uuidsToStrArr(svcUUIDs)
@@ -82,6 +89,7 @@ func (p Peripheral) DiscoverIncludedServices(svcUUIDs []UUID, svc Service) {
 }
 
 // Services
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1518978-services
 func (p Peripheral) Services() []Service {
 	oa := C.cb_prph_services(p.ptr)
@@ -97,6 +105,7 @@ func (p Peripheral) Services() []Service {
 }
 
 // DiscoverCharacteristics
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1518797-discovercharacteristics
 func (p Peripheral) DiscoverCharacteristics(chrUUIDs []UUID, svc Service) {
 	arr := uuidsToStrArr(chrUUIDs)
@@ -106,24 +115,28 @@ func (p Peripheral) DiscoverCharacteristics(chrUUIDs []UUID, svc Service) {
 }
 
 // DiscoverDescriptors
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1519070-discoverdescriptorsforcharacteri
 func (p Peripheral) DiscoverDescriptors(chr Characteristic) {
 	C.cb_prph_discover_dscs(p.ptr, chr.ptr)
 }
 
 // ReadCharacteristic
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1518759-readvalueforcharacteristic
 func (p Peripheral) ReadCharacteristic(chr Characteristic) {
 	C.cb_prph_read_chr(p.ptr, chr.ptr)
 }
 
 // ReadDescriptor
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1518789-readvaluefordescriptor
 func (p Peripheral) ReadDescriptor(dsc Descriptor) {
 	C.cb_prph_read_dsc(p.ptr, dsc.ptr)
 }
 
 // WriteCharacteristic
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1518747-writevalue
 func (p Peripheral) WriteCharacteristic(data []byte, chr Characteristic, withRsp bool) {
 	ba := byteSliceToByteArr(data)
@@ -133,6 +146,7 @@ func (p Peripheral) WriteCharacteristic(data []byte, chr Characteristic, withRsp
 }
 
 // WriteDescriptor
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1519107-writevalue
 func (p Peripheral) WriteDescriptor(data []byte, dsc Descriptor) {
 	ba := byteSliceToByteArr(data)
@@ -142,6 +156,7 @@ func (p Peripheral) WriteDescriptor(data []byte, dsc Descriptor) {
 }
 
 // MaximumWriteValueLength
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1620312-maximumwritevaluelengthfortype
 func (p Peripheral) MaximumWriteValueLength(withRsp bool) int {
 	val := C.cb_prph_max_write_len(p.ptr, chrWriteType(withRsp))
@@ -149,24 +164,28 @@ func (p Peripheral) MaximumWriteValueLength(withRsp bool) int {
 }
 
 // SetNotify
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1518949-setnotifyvalue
 func (p Peripheral) SetNotify(enabled bool, chr Characteristic) {
 	C.cb_prph_set_notify(p.ptr, C.bool(enabled), chr.ptr)
 }
 
 // PeripheralState
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1519113-state
 func (p Peripheral) State() PeripheralState {
 	return PeripheralState(C.cb_prph_state(p.ptr))
 }
 
 // CanSendWriteWithoutResponse
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/2891512-cansendwritewithoutresponse
 func (p Peripheral) CanSendWriteWithoutResponse() bool {
 	return bool(C.cb_prph_can_send_write_without_rsp(p.ptr))
 }
 
 // ReadRSSI
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1519111-readrssi
 func (p Peripheral) ReadRSSI() {
 	C.cb_prph_read_rssi(p.ptr)

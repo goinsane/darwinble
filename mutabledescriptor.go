@@ -9,6 +9,7 @@ import "unsafe"
 import "C"
 
 // MutableDescriptor
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmutabledescriptor
 type MutableDescriptor struct {
 	ptr unsafe.Pointer

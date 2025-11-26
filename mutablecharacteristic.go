@@ -9,6 +9,7 @@ import "unsafe"
 import "C"
 
 // MutableCharacteristic
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic
 type MutableCharacteristic struct {
 	ptr unsafe.Pointer
@@ -35,6 +36,7 @@ func (c MutableCharacteristic) Characteristic() Characteristic {
 }
 
 // SetDescriptors
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic/1518827-descriptors
 func (c MutableCharacteristic) SetDescriptors(mdscs []MutableDescriptor) {
 	dscs := mallocObjArr(len(mdscs))
@@ -48,6 +50,7 @@ func (c MutableCharacteristic) SetDescriptors(mdscs []MutableDescriptor) {
 }
 
 // SetValue
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic/1519121-value
 func (c MutableCharacteristic) SetValue(val []byte) {
 	ba := byteSliceToByteArr(val)

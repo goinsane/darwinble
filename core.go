@@ -134,6 +134,7 @@ func (u UUID) String() string {
 }
 
 // NSError
+//
 // https://developer.apple.com/documentation/foundation/nserror
 type NSError struct {
 	msg  string

@@ -7,6 +7,7 @@ package darwinble
 import "C"
 
 // ManagerState
+//
 // https://developer.apple.com/documentation/corebluetooth/cbmanagerstate
 type ManagerState int
 
@@ -20,6 +21,7 @@ const (
 )
 
 // ManagerOpts
+//
 // https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/central_manager_initialization_options
 type ManagerOpts struct {
 	ShowPowerAlert    bool
