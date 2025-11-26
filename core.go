@@ -30,7 +30,7 @@ func UUID16(i uint16) UUID {
 	return UUID(b)
 }
 
-// UUID16 constructs a 128-bit UUID from a 16-element byte slice.
+// UUID128 constructs a 128-bit UUID from a 16-element byte slice.
 func UUID128(b []byte) (UUID, error) {
 	if len(b) != 16 {
 		return nil, fmt.Errorf("failed to construct UUID128: wrong length: have=%d want=16", len(b))

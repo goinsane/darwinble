@@ -170,7 +170,7 @@ func (p Peripheral) SetNotify(enabled bool, chr Characteristic) {
 	C.cb_prph_set_notify(p.ptr, C.bool(enabled), chr.ptr)
 }
 
-// PeripheralState
+// State
 //
 // https://developer.apple.com/documentation/corebluetooth/cbperipheral/1519113-state
 func (p Peripheral) State() PeripheralState {

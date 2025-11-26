@@ -1,5 +1,7 @@
 package darwinble
 
+// PeripheralManagerDelegate
+//
 // https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate
 type PeripheralManagerDelegate interface {
 	// PeripheralManagerDidUpdateState

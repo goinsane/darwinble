@@ -129,7 +129,7 @@ func (pm PeripheralManager) StartAdvertising(ad AdvData) error {
 
 	BTPeripheralManagerDidStartAdvertising(pm.ptr, &err)
 	if err.code != 0 {
-		return errors.New("Didn't start advertising!")
+		return errors.New("didn't start advertising")
 	}
 
 	return nil
