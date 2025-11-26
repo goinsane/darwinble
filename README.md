@@ -1,7 +1,7 @@
 # darwinble
 
-**darwinble** implements Go BLE (Bluetooth Low Energy) bindings for Darwin with CoreBluetooth (MacOS and IOS)
-[CoreBluetooth](https://developer.apple.com/documentation/corebluetooth?language=objc).
+**darwinble** implements Go BLE (Bluetooth Low Energy) bindings for Darwin (MacOS and IOS)
+with [CoreBluetooth](https://developer.apple.com/documentation/corebluetooth?language=objc).
 
 ## Documentation
 
