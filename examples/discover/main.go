@@ -12,16 +12,16 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/tinygo-org/cbgo"
+	"github.com/goinsane/darwinble"
 )
 
 type MyDelegate struct {
-	cbgo.CentralManagerDelegateBase
-	cbgo.PeripheralDelegateBase
+	darwinble.CentralManagerDelegateBase
+	darwinble.PeripheralDelegateBase
 }
 
 var devName string
-var myPrph cbgo.Peripheral
+var myPrph darwinble.Peripheral
 
 // This channel is used to make a blocking interface out of the CoreBluetooth
 // API.
@@ -35,18 +35,18 @@ func block() {
 	}
 }
 
-func (d *MyDelegate) CentralManagerDidUpdateState(cmgr cbgo.CentralManager) {
-	if cmgr.State() != cbgo.ManagerStatePoweredOn {
+func (d *MyDelegate) CentralManagerDidUpdateState(cmgr darwinble.CentralManager) {
+	if cmgr.State() != darwinble.ManagerStatePoweredOn {
 		ch <- fmt.Errorf("central manager has invalid state: have=%d want=%d: is Bluetooth turned on?",
-			cmgr.State(), cbgo.ManagerStatePoweredOn)
+			cmgr.State(), darwinble.ManagerStatePoweredOn)
 	} else {
 		// Bluetooth is powered on.  Unblock the main thread.
 		ch <- nil
 	}
 }
 
-func (d *MyDelegate) DidDiscoverPeripheral(cm cbgo.CentralManager, prph cbgo.Peripheral,
-	advFields cbgo.AdvFields, rssi int) {
+func (d *MyDelegate) DidDiscoverPeripheral(cm darwinble.CentralManager, prph darwinble.Peripheral,
+	advFields darwinble.AdvFields, rssi int) {
 
 	name := advFields.LocalName
 	if name == "" {
@@ -62,7 +62,7 @@ func (d *MyDelegate) DidDiscoverPeripheral(cm cbgo.CentralManager, prph cbgo.Per
 	}
 }
 
-func (d *MyDelegate) DidConnectPeripheral(cm cbgo.CentralManager, prph cbgo.Peripheral) {
+func (d *MyDelegate) DidConnectPeripheral(cm darwinble.CentralManager, prph darwinble.Peripheral) {
 	// Make sure our delegate gets called for events related to this
 	// peripheral.
 	prph.SetDelegate(d)
@@ -71,15 +71,15 @@ func (d *MyDelegate) DidConnectPeripheral(cm cbgo.CentralManager, prph cbgo.Peri
 	ch <- nil
 }
 
-func (d *MyDelegate) DidFailToConnectPeripheral(cm cbgo.CentralManager, prph cbgo.Peripheral, err error) {
+func (d *MyDelegate) DidFailToConnectPeripheral(cm darwinble.CentralManager, prph darwinble.Peripheral, err error) {
 	ch <- fmt.Errorf("failed to connect: %v", err)
 }
 
-func (d *MyDelegate) DidDisconnectPeripheral(cm cbgo.CentralManager, prph cbgo.Peripheral, err error) {
+func (d *MyDelegate) DidDisconnectPeripheral(cm darwinble.CentralManager, prph darwinble.Peripheral, err error) {
 	ch <- fmt.Errorf("peripheral disconnected: %v", err)
 }
 
-func (d *MyDelegate) DidDiscoverServices(prph cbgo.Peripheral, err error) {
+func (d *MyDelegate) DidDiscoverServices(prph darwinble.Peripheral, err error) {
 	if err != nil {
 		ch <- fmt.Errorf("failed to discover services: %v\n", err)
 	} else {
@@ -89,7 +89,7 @@ func (d *MyDelegate) DidDiscoverServices(prph cbgo.Peripheral, err error) {
 	}
 }
 
-func (d *MyDelegate) DidDiscoverCharacteristics(prph cbgo.Peripheral, svc cbgo.Service, err error) {
+func (d *MyDelegate) DidDiscoverCharacteristics(prph darwinble.Peripheral, svc darwinble.Service, err error) {
 	if err != nil {
 		ch <- fmt.Errorf("failed to discover characteristics: %v\n", err)
 	} else {
@@ -99,7 +99,7 @@ func (d *MyDelegate) DidDiscoverCharacteristics(prph cbgo.Peripheral, svc cbgo.S
 	}
 }
 
-func (d *MyDelegate) DidDiscoverDescriptors(prph cbgo.Peripheral, chr cbgo.Characteristic, err error) {
+func (d *MyDelegate) DidDiscoverDescriptors(prph darwinble.Peripheral, chr darwinble.Characteristic, err error) {
 	if err != nil {
 		ch <- fmt.Errorf("failed to discover descriptors: %v\n", err)
 	} else {
@@ -109,7 +109,7 @@ func (d *MyDelegate) DidDiscoverDescriptors(prph cbgo.Peripheral, chr cbgo.Chara
 	}
 }
 
-func (d *MyDelegate) DidUpdateValueForCharacteristic(prph cbgo.Peripheral, chr cbgo.Characteristic, err error) {
+func (d *MyDelegate) DidUpdateValueForCharacteristic(prph darwinble.Peripheral, chr darwinble.Characteristic, err error) {
 	if err != nil {
 		ch <- fmt.Errorf("failed to read characteristic: %v", err)
 	} else {
@@ -118,7 +118,7 @@ func (d *MyDelegate) DidUpdateValueForCharacteristic(prph cbgo.Peripheral, chr c
 	}
 }
 
-func (d *MyDelegate) DidUpdateValueForDescriptor(prph cbgo.Peripheral, dsc cbgo.Descriptor, err error) {
+func (d *MyDelegate) DidUpdateValueForDescriptor(prph darwinble.Peripheral, dsc darwinble.Descriptor, err error) {
 	if err != nil {
 		ch <- fmt.Errorf("failed to read descriptor: %v", err)
 	} else {
@@ -128,7 +128,7 @@ func (d *MyDelegate) DidUpdateValueForDescriptor(prph cbgo.Peripheral, dsc cbgo.
 }
 
 // discoverProfile performs full service discovery on the specified peripheral.
-func discoverProfile(prph cbgo.Peripheral) {
+func discoverProfile(prph darwinble.Peripheral) {
 	prph.DiscoverServices(nil)
 	block()
 
@@ -152,9 +152,7 @@ func main() {
 	}
 	devName = os.Args[1]
 
-	//cbgo.SetLogLevel(logrus.DebugLevel)
-
-	cm := cbgo.NewCentralManager(nil)
+	cm := darwinble.NewCentralManager(nil)
 	cm.SetDelegate(&MyDelegate{})
 
 	// Wait for the Bluetooth power on event.  Catalina seems to behave
@@ -165,7 +163,7 @@ func main() {
 	//
 	// 1. Block only if the state hasn't changed yet
 	// 2. Drain the channel of a stray state change event (if any).
-	if cm.State() == cbgo.ManagerStateUnknown {
+	if cm.State() == darwinble.ManagerStateUnknown {
 		block()
 	}
 	for len(ch) > 0 {
@@ -182,8 +180,8 @@ func main() {
 
 	discoverProfile(myPrph)
 
-	var readableChrs []cbgo.Characteristic
-	var readableDscs []cbgo.Descriptor
+	var readableChrs []darwinble.Characteristic
+	var readableDscs []darwinble.Descriptor
 
 	// Print the peer's profile.
 	svcs := myPrph.Services()
@@ -192,7 +190,7 @@ func main() {
 
 		chrs := s.Characteristics()
 		for j, c := range chrs {
-			if c.Properties()&cbgo.CharacteristicPropertyRead != 0 {
+			if c.Properties()&darwinble.CharacteristicPropertyRead != 0 {
 				// This characteristic is readable.  Remember it so that we can
 				// read it later.
 				readableChrs = append(readableChrs, chrs[j])

@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 /*
 // See cutil.go for C compiler flags.
@@ -8,7 +8,8 @@ import "C"
 
 import "unsafe"
 
-// MutableService: https://developer.apple.com/documentation/corebluetooth/cbmutableservice
+// MutableService
+// https://developer.apple.com/documentation/corebluetooth/cbmutableservice
 type MutableService struct {
 	ptr unsafe.Pointer
 }
@@ -27,7 +28,8 @@ func (s MutableService) Service() Service {
 	return Service{s.ptr}
 }
 
-// SetCharacteristics: https://developer.apple.com/documentation/corebluetooth/cbmutableservice/1434317-characteristics
+// SetCharacteristics
+// https://developer.apple.com/documentation/corebluetooth/cbmutableservice/1434317-characteristics
 func (s MutableService) SetCharacteristics(mchrs []MutableCharacteristic) {
 	chrs := mallocObjArr(len(mchrs))
 	defer C.free(unsafe.Pointer(chrs.objs))
@@ -39,7 +41,8 @@ func (s MutableService) SetCharacteristics(mchrs []MutableCharacteristic) {
 	C.cb_msvc_set_characteristics(s.ptr, &chrs)
 }
 
-// SetIncludedServices: https://developer.apple.com/documentation/corebluetooth/cbmutableservice/1434320-includedservices
+// SetIncludedServices
+// https://developer.apple.com/documentation/corebluetooth/cbmutableservice/1434320-includedservices
 func (s MutableService) SetIncludedServices(msvcs []MutableService) {
 	svcs := mallocObjArr(len(msvcs))
 	defer C.free(unsafe.Pointer(svcs.objs))

@@ -1,23 +1,30 @@
-package cbgo
+package darwinble
 
-// CentralManagerDelegate: https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate
+// CentralManagerDelegate
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate
 type CentralManagerDelegate interface {
-	// DidConnectPeripheral: https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518969-centralmanager
+	// DidConnectPeripheral
+	// https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518969-centralmanager
 	DidConnectPeripheral(cmgr CentralManager, prph Peripheral)
 
-	// DidDisconnectPeripheral: https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518791-centralmanager
+	// DidDisconnectPeripheral
+	// https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518791-centralmanager
 	DidDisconnectPeripheral(cmgr CentralManager, prph Peripheral, err error)
 
-	// DidFailToConnectPeripheral: https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518988-centralmanager
+	// DidFailToConnectPeripheral
+	// https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518988-centralmanager
 	DidFailToConnectPeripheral(cmgr CentralManager, prph Peripheral, err error)
 
-	// DidDiscoverPeripheral: https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518937-centralmanager
+	// DidDiscoverPeripheral
+	// https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518937-centralmanager
 	DidDiscoverPeripheral(cmgr CentralManager, prph Peripheral, advFields AdvFields, rssi int)
 
-	// CentralManagerDidUpdateState: https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518888-centralmanagerdidupdatestate
+	// CentralManagerDidUpdateState
+	// https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518888-centralmanagerdidupdatestate
 	CentralManagerDidUpdateState(cmgr CentralManager)
 
-	// CentralManagerWillRestoreState: https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518819-centralmanager
+	// CentralManagerWillRestoreState
+	// https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518819-centralmanager
 	CentralManagerWillRestoreState(cmgr CentralManager, opts CentralManagerRestoreOpts)
 }
 

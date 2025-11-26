@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 /*
 // See cutil.go for C compiler flags.
@@ -6,7 +6,8 @@ package cbgo
 */
 import "C"
 
-// ManagerState: https://developer.apple.com/documentation/corebluetooth/cbmanagerstate
+// ManagerState
+// https://developer.apple.com/documentation/corebluetooth/cbmanagerstate
 type ManagerState int
 
 const (
@@ -18,15 +19,16 @@ const (
 	ManagerStateUnsupported  = ManagerState(C.CBManagerStateUnsupported)
 )
 
-// ManagerOpts: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/central_manager_initialization_options
+// ManagerOpts
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/central_manager_initialization_options
 type ManagerOpts struct {
 	ShowPowerAlert    bool
 	RestoreIdentifier string
 }
 
-// DfltManagerOpts is the set of options that gets used when nil is
+// DefaultManagerOpts is the set of options that gets used when nil is
 // passed to `NewCentralManager()`.
-var DfltManagerOpts = ManagerOpts{
+var DefaultManagerOpts = ManagerOpts{
 	ShowPowerAlert:    false,
 	RestoreIdentifier: "",
 }

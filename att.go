@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 /*
 // See cutil.go for C compiler flags.
@@ -7,7 +7,8 @@ package cbgo
 import "C"
 import "unsafe"
 
-// AttributePermissions: https://developer.apple.com/documentation/corebluetooth/cbattributepermissions
+// AttributePermissions
+// https://developer.apple.com/documentation/corebluetooth/cbattributepermissions
 type AttributePermissions int
 
 const (
@@ -17,7 +18,8 @@ const (
 	AttributePermissionsWriteEncryptionRequired = AttributePermissions(C.CBAttributePermissionsWriteEncryptionRequired)
 )
 
-// ATTError: https://developer.apple.com/documentation/corebluetooth/cbatterror
+// ATTError
+// https://developer.apple.com/documentation/corebluetooth/cbatterror
 type ATTError int
 
 const (
@@ -41,30 +43,35 @@ const (
 	ATTErrorInsufficientResources         = ATTError(C.CBATTErrorInsufficientResources)
 )
 
-// ATTRequest: https://developer.apple.com/documentation/corebluetooth/cbattrequest
+// ATTRequest
+// https://developer.apple.com/documentation/corebluetooth/cbattrequest
 type ATTRequest struct {
 	ptr unsafe.Pointer
 }
 
-// Central: https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518995-central
+// Central
+// https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518995-central
 func (r ATTRequest) Central() Central {
 	ptr := C.cb_atr_central(r.ptr)
 	return Central{unsafe.Pointer(ptr)}
 }
 
-// Characteristic: https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518716-characteristic
+// Characteristic
+// https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518716-characteristic
 func (r ATTRequest) Characteristic() Characteristic {
 	ptr := C.cb_atr_characteristic(r.ptr)
 	return Characteristic{unsafe.Pointer(ptr)}
 }
 
-// Value: https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518795-value
+// Value
+// https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518795-value
 func (r ATTRequest) Value() []byte {
 	ba := C.cb_atr_value(r.ptr)
 	return byteArrToByteSlice(&ba)
 }
 
-// SetValue: https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518795-value
+// SetValue
+// https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518795-value
 func (r ATTRequest) SetValue(v []byte) {
 	ba := byteSliceToByteArr(v)
 	defer C.free(unsafe.Pointer(ba.data))
@@ -72,7 +79,8 @@ func (r ATTRequest) SetValue(v []byte) {
 	C.cb_atr_set_value(r.ptr, &ba)
 }
 
-// Offset: https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518857-offset
+// Offset
+// https://developer.apple.com/documentation/corebluetooth/cbattrequest/1518857-offset
 func (r ATTRequest) Offset() int {
 	return int(C.cb_atr_offset(r.ptr))
 }

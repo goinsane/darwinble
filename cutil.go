@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 /*
 #cgo CFLAGS: -x objective-c

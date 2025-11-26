@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 import "unsafe"
 
@@ -8,7 +8,8 @@ import "unsafe"
 */
 import "C"
 
-// CharacteristicProperties: https://developer.apple.com/documentation/corebluetooth/cbcharacteristicproperties
+// CharacteristicProperties
+// https://developer.apple.com/documentation/corebluetooth/cbcharacteristicproperties
 type CharacteristicProperties int
 
 const (
@@ -32,30 +33,35 @@ func chrWriteType(withRsp bool) C.int {
 	}
 }
 
-// Characteristic: https://developer.apple.com/documentation/corebluetooth/cbcharacteristic
+// Characteristic
+// https://developer.apple.com/documentation/corebluetooth/cbcharacteristic
 type Characteristic struct {
 	ptr unsafe.Pointer
 }
 
-// UUID: https://developer.apple.com/documentation/corebluetooth/cbattribute/1620638-uuid
+// UUID
+// https://developer.apple.com/documentation/corebluetooth/cbattribute/1620638-uuid
 func (c Characteristic) UUID() UUID {
 	cstr := C.cb_chr_uuid(c.ptr)
 	return MustParseUUID(C.GoString(cstr))
 }
 
-// Service: https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1518728-service
+// Service
+// https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1518728-service
 func (c Characteristic) Service() Service {
 	ptr := C.cb_chr_service(c.ptr)
 	return Service{ptr}
 }
 
-// Value: https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1518878-value
+// Value
+// https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1518878-value
 func (c Characteristic) Value() []byte {
 	ba := C.cb_chr_value(c.ptr)
 	return byteArrToByteSlice(&ba)
 }
 
-// Descriptors: https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1518957-descriptors
+// Descriptors
+// https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1518957-descriptors
 func (c Characteristic) Descriptors() []Descriptor {
 	oa := C.cb_chr_descriptors(c.ptr)
 	defer C.free(unsafe.Pointer(oa.objs))
@@ -69,12 +75,14 @@ func (c Characteristic) Descriptors() []Descriptor {
 	return dscs
 }
 
-// Properties: https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1519010-properties
+// Properties
+// https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1519010-properties
 func (c Characteristic) Properties() CharacteristicProperties {
 	return CharacteristicProperties(C.cb_chr_properties(c.ptr))
 }
 
-// IsNotifying: https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1519057-isnotifying
+// IsNotifying
+// https://developer.apple.com/documentation/corebluetooth/cbcharacteristic/1519057-isnotifying
 func (c Characteristic) IsNotifying() bool {
 	return bool(C.cb_chr_is_notifying(c.ptr))
 }

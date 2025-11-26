@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 import "unsafe"
 
@@ -8,7 +8,8 @@ import "unsafe"
 */
 import "C"
 
-// MutableCharacteristic: https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic
+// MutableCharacteristic
+// https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic
 type MutableCharacteristic struct {
 	ptr unsafe.Pointer
 }
@@ -33,7 +34,8 @@ func (c MutableCharacteristic) Characteristic() Characteristic {
 	return Characteristic{c.ptr}
 }
 
-// SetDescriptors: https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic/1518827-descriptors
+// SetDescriptors
+// https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic/1518827-descriptors
 func (c MutableCharacteristic) SetDescriptors(mdscs []MutableDescriptor) {
 	dscs := mallocObjArr(len(mdscs))
 	defer C.free(unsafe.Pointer(dscs.objs))
@@ -45,7 +47,8 @@ func (c MutableCharacteristic) SetDescriptors(mdscs []MutableDescriptor) {
 	C.cb_mchr_set_descriptors(c.ptr, &dscs)
 }
 
-// SetValue: https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic/1519121-value
+// SetValue
+// https://developer.apple.com/documentation/corebluetooth/cbmutablecharacteristic/1519121-value
 func (c MutableCharacteristic) SetValue(val []byte) {
 	ba := byteSliceToByteArr(val)
 	defer C.free(unsafe.Pointer(ba.data))

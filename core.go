@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 import (
 	"encoding/binary"
@@ -40,7 +40,8 @@ func UUID128(b []byte) (UUID, error) {
 }
 
 // ParseUUID16 parses a UUID string with the form:
-//     1234
+//
+//	1234
 func ParseUUID16(s string) (UUID, error) {
 	if len(s) != UUID16StringLength {
 		return nil, fmt.Errorf("invalid UUID16: %s", s)
@@ -55,7 +56,8 @@ func ParseUUID16(s string) (UUID, error) {
 }
 
 // ParseUUID128 parses a UUID string with the form:
-//     01234567-89ab-cdef-0123-456789abcdef
+//
+//	01234567-89ab-cdef-0123-456789abcdef
 func ParseUUID128(s string) (UUID, error) {
 	if len(s) != UUID128StringLength {
 		return nil, fmt.Errorf("invalid UUID128: %s", s)
@@ -126,12 +128,13 @@ func (u UUID) String() string {
 		return s[:8] + "-" + s[8:12] + "-" + s[12:16] + "-" + s[16:20] + "-" + s[20:]
 
 	default:
-		btlog.Errorf("invalid UUID: %s", hex.EncodeToString(u))
+		logPrintf("invalid UUID: %s", hex.EncodeToString(u))
 		return ""
 	}
 }
 
-// NSError: https://developer.apple.com/documentation/foundation/nserror
+// NSError
+// https://developer.apple.com/documentation/foundation/nserror
 type NSError struct {
 	msg  string
 	code int

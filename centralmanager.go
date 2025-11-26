@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 /*
 // See cutil.go for C compiler flags.
@@ -10,32 +10,35 @@ import (
 	"unsafe"
 )
 
-// CentralManagerRestoreOpts: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/central_manager_state_restoration_options
+// CentralManagerRestoreOpts
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/central_manager_state_restoration_options
 type CentralManagerRestoreOpts struct {
 	Peripherals            []Peripheral
 	ScanServices           []UUID
 	CentralManagerScanOpts *CentralManagerScanOpts // nil if none
 }
 
-// CentralManagerScanOpts: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/peripheral_scanning_options
+// CentralManagerScanOpts
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/peripheral_scanning_options
 type CentralManagerScanOpts struct {
 	AllowDuplicates       bool
 	SolicitedServiceUUIDs []UUID
 }
 
-// DfltCentralManagerConnectOpts is the set of options that gets used when nil
+// DefaultCentralManagerConnectOpts is the set of options that gets used when nil
 // is passed to `Connect()`.
-var DfltCentralManagerConnectOpts = CentralManagerConnectOpts{
+var DefaultCentralManagerConnectOpts = CentralManagerConnectOpts{
 	NotifyOnConnection:    true,
 	NotifyOnDisconnection: true,
 	NotifyOnNotification:  true,
 }
 
-// DfltCentralManagerScanOpts is the set of options that gets used when nil is
+// DefaultCentralManagerScanOpts is the set of options that gets used when nil is
 // passed to `Scan()`.
-var DfltCentralManagerScanOpts = CentralManagerScanOpts{}
+var DefaultCentralManagerScanOpts = CentralManagerScanOpts{}
 
-// CentralManagerConnectOpts: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/peripheral_connection_options
+// CentralManagerConnectOpts
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/peripheral_connection_options
 type CentralManagerConnectOpts struct {
 	NotifyOnConnection      bool
 	NotifyOnDisconnection   bool
@@ -45,7 +48,8 @@ type CentralManagerConnectOpts struct {
 	StartDelay              int
 }
 
-// CentralManager: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager?language=objc
+// CentralManager
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager?language=objc
 type CentralManager struct {
 	ptr unsafe.Pointer
 }
@@ -65,7 +69,7 @@ func findCentralManagerDlg(ptr unsafe.Pointer) CentralManagerDelegate {
 // defaults.  Don't forget to call `SetDelegate()` afterwards!
 func NewCentralManager(opts *ManagerOpts) CentralManager {
 	if opts == nil {
-		opts = &DfltManagerOpts
+		opts = &DefaultManagerOpts
 	}
 
 	pwrAlert := C.bool(opts.ShowPowerAlert)
@@ -90,15 +94,17 @@ func (cm CentralManager) SetDelegate(d CentralManagerDelegate) {
 	C.cb_cmgr_set_delegate(cm.ptr, C.bool(d != nil))
 }
 
-// State: https://developer.apple.com/documentation/corebluetooth/cbmanager/1648600-state
+// State
+// https://developer.apple.com/documentation/corebluetooth/cbmanager/1648600-state
 func (cm CentralManager) State() ManagerState {
 	return ManagerState(C.cb_cmgr_state(cm.ptr))
 }
 
-// Connect: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518766-connectperipheral
+// Connect
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518766-connectperipheral
 func (cm CentralManager) Connect(prph Peripheral, opts *CentralManagerConnectOpts) {
 	if opts == nil {
-		opts = &DfltCentralManagerConnectOpts
+		opts = &DefaultCentralManagerConnectOpts
 	}
 
 	copts := C.struct_connect_opts{
@@ -113,12 +119,14 @@ func (cm CentralManager) Connect(prph Peripheral, opts *CentralManagerConnectOpt
 	C.cb_cmgr_connect(cm.ptr, prph.ptr, &copts)
 }
 
-// CancelConnect: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518952-cancelperipheralconnection
+// CancelConnect
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518952-cancelperipheralconnection
 func (cm CentralManager) CancelConnect(prph Peripheral) {
 	C.cb_cmgr_cancel_connect(cm.ptr, prph.ptr)
 }
 
-// RetrieveConnectedPeripheralsWithServices: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518924-retrieveconnectedperipheralswith
+// RetrieveConnectedPeripheralsWithServices
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518924-retrieveconnectedperipheralswith
 func (cm CentralManager) RetrieveConnectedPeripheralsWithServices(uuids []UUID) []Peripheral {
 	strs := uuidsToStrArr(uuids)
 	defer freeStrArr(&strs)
@@ -136,7 +144,8 @@ func (cm CentralManager) RetrieveConnectedPeripheralsWithServices(uuids []UUID) 
 	return prphs
 }
 
-// RetrievePeripheralsWithIdentifiers: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1519127-retrieveperipheralswithidentifie
+// RetrievePeripheralsWithIdentifiers
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1519127-retrieveperipheralswithidentifie
 func (cm CentralManager) RetrievePeripheralsWithIdentifiers(uuids []UUID) []Peripheral {
 	strs := uuidsToStrArr(uuids)
 	defer freeStrArr(&strs)
@@ -154,13 +163,14 @@ func (cm CentralManager) RetrievePeripheralsWithIdentifiers(uuids []UUID) []Peri
 	return prphs
 }
 
-// Scan: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518986-scanforperipheralswithservices
+// Scan
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518986-scanforperipheralswithservices
 func (cm CentralManager) Scan(serviceUUIDs []UUID, opts *CentralManagerScanOpts) {
 	arrSvcUUIDs := uuidsToStrArr(serviceUUIDs)
 	defer freeStrArr(&arrSvcUUIDs)
 
 	if opts == nil {
-		opts = &DfltCentralManagerScanOpts
+		opts = &DefaultCentralManagerScanOpts
 	}
 
 	arrSolSvcUUIDs := uuidsToStrArr(opts.SolicitedServiceUUIDs)
@@ -174,12 +184,14 @@ func (cm CentralManager) Scan(serviceUUIDs []UUID, opts *CentralManagerScanOpts)
 	C.cb_cmgr_scan(cm.ptr, &arrSvcUUIDs, &copts)
 }
 
-// StopScan: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518984-stopscan
+// StopScan
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518984-stopscan
 func (cm CentralManager) StopScan() {
 	C.cb_cmgr_stop_scan(cm.ptr)
 }
 
-// IsScanning: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1620640-isscanning
+// IsScanning
+// https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1620640-isscanning
 func (cm CentralManager) IsScanning() bool {
 	return bool(C.cb_cmgr_is_scanning(cm.ptr))
 }

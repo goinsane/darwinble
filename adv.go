@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 type AdvServiceData struct {
 	UUID UUID

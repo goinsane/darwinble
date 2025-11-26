@@ -1,4 +1,4 @@
-package cbgo
+package darwinble
 
 import (
 	"sync"
