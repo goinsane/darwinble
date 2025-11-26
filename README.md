@@ -25,8 +25,8 @@ as possible. There are a few (consistent) deviations:
 ## Issues
 
 There are definitely memory leaks. ARC is not compatible with cgo, so objective C memory has to be managed manually.
-Contributors didn't see a set of consistent guidelines for object ownership in the CoreBluetooth documentation, so *
-*darwinble** errs on the side of leaking. Hopefully this is only an issue for very long running processes!  Any fixes
+Contributors didn't see a set of consistent guidelines for object ownership in the CoreBluetooth documentation, so
+**darwinble** errs on the side of leaking. Hopefully this is only an issue for very long running processes! Any fixes
 here are much appreciated.
 
 ## Source Code Chain
