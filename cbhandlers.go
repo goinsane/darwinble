@@ -371,7 +371,7 @@ func BTPeripheralManagerCentralDidUnsubscribe(pmgr unsafe.Pointer, cent unsafe.P
 
 //export BTPeripheralManagerIsReadyToUpdateSubscribers
 func BTPeripheralManagerIsReadyToUpdateSubscribers(pmgr unsafe.Pointer) {
-	logDebugf("PeripheralManagerIsReadyToUpdateSubscribers: pmgr=%v")
+	logDebugf("PeripheralManagerIsReadyToUpdateSubscribers: pmgr=%v", pmgr)
 
 	dlg := findPeripheralManagerDlg(pmgr)
 	if dlg != nil {
